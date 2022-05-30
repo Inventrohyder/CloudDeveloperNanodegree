@@ -24,21 +24,53 @@ $ ./build-infrastracture.sh
 > Before moving to this step, make sure you have [built the infrastructure](#build-the-infrastructure).
 > 
 > To check if the infrastructure has been built use the following
-> (the status would be CREATE\_COMPLETE):
+> (the `StackStatus` would be `CREATE_COMPLETE`):
 >
 > ```zsh
-> $ aws cloudformation list-stacks
+> $ aws cloudformation describe-stacks --stack-name static-site-stack
 > {
->     "StackSummaries": [
+>     "Stacks": [
 >         {
->             "StackId": "arn:aws:cloudformation:us-east-1:549763406380:stack/static-site-stack/e3347ce0-e00c-11ec-a6a8-0edcadfa9803",
+>             "StackId": "arn:aws:cloudformation:us-east-1:549763406380:stack/static-site-stack/a18df590-e030-11ec-af67-0ad6c3e49119",
 >             "StackName": "static-site-stack",
->             "CreationTime": "2022-05-30T11:37:29.834000+00:00",
+>             "Parameters": [
+>                 {
+>                     "ParameterKey": "BucketName",
+>                     "ParameterValue": "my-549763406380-bucket"
+>                 }
+>             ],
+>             "CreationTime": "2022-05-30T15:53:21.558000+00:00",
+>             "RollbackConfiguration": {},
 >             "StackStatus": "CREATE_COMPLETE",
+>             "DisableRollback": false,
+>             "NotificationARNs": [],
+>             "Outputs": [
+>                 {
+>                     "OutputKey": "S3BucketSecureURL",
+>                     "OutputValue": "https://my-549763406380-bucket.s3.amazonaws.com"
+>                 },
+>                 {
+>                     "OutputKey": "WebsiteURL",
+>                     "OutputValue": "http://my-549763406380-bucket.s3-website-us-east-1.amazonaws.com",
+>                     "Description": "URL for website hosted on S3"
+>                 },
+>                 {
+>                     "OutputKey": "DistributionId",
+>                     "OutputValue": "E2PJY09NY19Q4U",
+>                     "Description": "CloudFront Distribution ID"
+>                 },
+>                 {
+>                     "OutputKey": "Domain",
+>                     "OutputValue": "d14d0ycp0xsuzu.cloudfront.net",
+>                     "Description": "Cloudfront Domain"
+>                 }
+>             ],
+>             "Tags": [],
 >             "DriftInformation": {
 >                 "StackDriftStatus": "NOT_CHECKED"
 >             }
->         }]
+>         }
+>     ]
 > }
 > ```
 
@@ -70,14 +102,34 @@ upload: vendor/bootstrap/css/bootstrap-reboot.css.map to s3://my-549763406380-bu
 
 ## Get the links
 
-Use the `./show-links.sh` file to get the links to the site.
-
-```zsh
-$ ./show-links.sh
-Distribution URL: "dpx0p65hefw3h.cloudfront.net"
-Bucket URL: http://my-549763406380-bucket.s3-website-us-east-1.amazonaws.com
-index.html link: https://my-549763406380-bucket.s3.amazonaws.com/index.html
-```
+The links can be found in the `describe-stacks` command as shown in the previous section on
+[deploying the static site to s3](#deploy-the-static-site-to-s3).
 
 The _Distribution URL_ takes a while before showing expected content but the other two links
 are immediately available.
+
+## Clean up
+
+To clean all the resources built we use the file `delete-infrastructure.sh`.
+
+It is contained in the root folder of the project and not in the static site template folder.
+
+```zsh
+$ cd ..
+$ ./delete-infrastructure.sh
+delete: s3://my-549763406380-bucket/vendor/.DS_Store
+delete: s3://my-549763406380-bucket/css/clean-blog.css
+delete: s3://my-549763406380-bucket/css/clean-blog.min.css
+delete: s3://my-549763406380-bucket/vendor/bootstrap/css/bootstrap-grid.css.map
+delete: s3://my-549763406380-bucket/img/taj_mahal.jpeg
+delete: s3://my-549763406380-bucket/vendor/bootstrap/css/bootstrap-grid.min.css
+delete: s3://my-549763406380-bucket/vendor/bootstrap/css/bootstrap-grid.css
+delete: s3://my-549763406380-bucket/index.html
+delete: s3://my-549763406380-bucket/img/.DS_Store
+delete: s3://my-549763406380-bucket/vendor/bootstrap/.DS_Store
+delete: s3://my-549763406380-bucket/vendor/bootstrap/css/bootstrap-reboot.css
+delete: s3://my-549763406380-bucket/vendor/bootstrap/css/bootstrap-reboot.min.css
+delete: s3://my-549763406380-bucket/vendor/bootstrap/css/bootstrap-reboot.css.map
+...
+```
+
