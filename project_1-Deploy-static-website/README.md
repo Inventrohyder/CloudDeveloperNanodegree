@@ -13,7 +13,7 @@ To build the infrastructure run the following:
 ```zsh
 $ ./build-infrastracture.sh
 {
-    "StackId": "arn:aws:cloudformation:us-east-1:549763406380:stack/static-site-stack/e3347ce0-e00c-11ec-a6a8-0edcadfa9803"
+    "StackId": "arn:aws:cloudformation:us-east-1:549763406380:stack/static-site-stack/682d1830-e03f-11ec-8932-12e128654c27"
 }
 ```
 
@@ -31,7 +31,7 @@ $ ./build-infrastracture.sh
 > {
 >     "Stacks": [
 >         {
->             "StackId": "arn:aws:cloudformation:us-east-1:549763406380:stack/static-site-stack/a18df590-e030-11ec-af67-0ad6c3e49119",
+>             "StackId": "arn:aws:cloudformation:us-east-1:549763406380:stack/static-site-stack/682d1830-e03f-11ec-8932-12e128654c27",
 >             "StackName": "static-site-stack",
 >             "Parameters": [
 >                 {
@@ -39,7 +39,7 @@ $ ./build-infrastracture.sh
 >                     "ParameterValue": "my-549763406380-bucket"
 >                 }
 >             ],
->             "CreationTime": "2022-05-30T15:53:21.558000+00:00",
+>             "CreationTime": "2022-05-30T17:40:44.762000+00:00",
 >             "RollbackConfiguration": {},
 >             "StackStatus": "CREATE_COMPLETE",
 >             "DisableRollback": false,
@@ -56,16 +56,17 @@ $ ./build-infrastracture.sh
 >                 },
 >                 {
 >                     "OutputKey": "DistributionId",
->                     "OutputValue": "E2PJY09NY19Q4U",
+>                     "OutputValue": "E1UX9Q0QWAX1P8",
 >                     "Description": "CloudFront Distribution ID"
 >                 },
 >                 {
 >                     "OutputKey": "Domain",
->                     "OutputValue": "d14d0ycp0xsuzu.cloudfront.net",
+>                     "OutputValue": "d23wp0xw2ulvh8.cloudfront.net",
 >                     "Description": "Cloudfront Domain"
 >                 }
 >             ],
 >             "Tags": [],
+>             "EnableTerminationProtection": false,
 >             "DriftInformation": {
 >                 "StackDriftStatus": "NOT_CHECKED"
 >             }

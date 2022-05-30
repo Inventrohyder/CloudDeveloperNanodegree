@@ -30,19 +30,12 @@ Resources:
     Properties:
       DistributionConfig:
         DefaultCacheBehavior:
+          Compress: true
           ViewerProtocolPolicy: redirect-to-https
           CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
           AllowedMethods:
             - GET
             - HEAD
-          Compress: true
-          DefaultTTL: 3600
-          ForwardedValues:
-            Cookies:
-              Forward: none
-            QueryString: false
-          MaxTTL: 86400
-          MinTTL: 60
           TargetOriginId: s3origin
         Enabled: true
         HttpVersion: http2
@@ -50,7 +43,7 @@ Resources:
           - DomainName: !Select [1, !Split ["//", !GetAtt S3Bucket.WebsiteURL]]
             Id: s3origin
             CustomOriginConfig:
-              OriginProtocolPolicy: https-only
+              OriginProtocolPolicy: http-only
         PriceClass: PriceClass_All
 Outputs:
   WebsiteURL:
