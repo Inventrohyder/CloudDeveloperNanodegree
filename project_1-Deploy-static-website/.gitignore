@@ -2,4 +2,4 @@
 .DS_Store
 
 # Vim intermediary files
-*.swpl
+*.swp

@@ -24,11 +24,7 @@ Resources:
             Effect: Allow
             Resource: !Sub 'arn:aws:s3:::${S3Bucket}/*'
             Principal: '*'
-  CloudFrontOriginAccessIdentity:
-    Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'
-    Properties:
-      CloudFrontOriginAccessIdentityConfig:
-        Comment: !Ref S3Bucket
+            
   CloudFrontDistribution:
     Type: 'AWS::CloudFront::Distribution'
     Properties:
@@ -57,15 +53,14 @@ Resources:
           MaxTTL: 86400
           MinTTL: 60
           TargetOriginId: s3origin
-        DefaultRootObject: /index.html
+        DefaultRootObject: index.html
         Enabled: true
         HttpVersion: http2
         Origins:
-          - DomainName: !GetAtt S3Bucket.WebsiteURL
+          - DomainName: !Select [1, !Split ["//", !GetAtt S3Bucket.WebsiteURL]]
             Id: s3origin
-            S3OriginConfig:
-              OriginAccessIdentity: !Sub >-
-                origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
         PriceClass: PriceClass_All
 Outputs:
   WebsiteURL:
