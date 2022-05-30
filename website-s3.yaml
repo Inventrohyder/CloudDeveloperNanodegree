@@ -1,0 +1,93 @@
+Parameters:
+  BucketName:
+    Type: String
+    Default: 'my-549763406380-bucket'
+
+Resources:
+    S3Bucket:
+        Type: 'AWS::S3::Bucket'
+        Properties:
+          AccessControl: PublicRead
+          BucketName: !Ref BucketName
+          MetricsConfigurations:
+            - Id: EntireBucket
+          WebsiteConfiguration:
+            IndexDocument: index.html
+            ErrorDocument: index.html
+        DeletionPolicy: Retain
+    ReadPolicy:
+        Type: 'AWS::S3::BucketPolicy'
+        Properties:
+          Bucket: !Ref S3Bucket
+          PolicyDocument:
+            Statement:
+              - Action: 's3:GetObject'
+                Effect: Allow
+                Resource: !Sub 'arn:aws:s3:::${S3Bucket}/*'
+                Principal: '*'
+    
+    # Configure Access to CloudFroun
+    CloudFrontOriginAccessIdentity:
+        Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'
+        Properties:
+          CloudFrontOriginAccessIdentityConfig:
+            Comment: !Ref S3Bucket
+
+    # Configure CloudFront
+    CloudFrontDistribution:
+        Type: 'AWS::CloudFront::Distribution'
+        Properties:
+          DistributionConfig:
+            CustomErrorResponses:
+              - ErrorCode: 403 # not found
+                ResponseCode: 404
+                ResponsePagePath: '/index.html'
+            DefaultCacheBehavior:
+              AllowedMethods:
+                - GET
+                - HEAD
+                - OPTIONS
+              CachedMethods:
+                - GET
+                - HEAD
+                - OPTIONS
+              Compress: true
+              DefaultTTL: 3600 # in seconds
+              ForwardedValues:
+                Cookies:
+                  Forward: none
+                QueryString: false
+              MaxTTL: 86400 # in seconds
+              MinTTL: 60 # in seconds
+              TargetOriginId: s3origin
+              ViewerProtocolPolicy: 'allow-all'
+            # This DefaultRootObject configuration is not enough.
+            DefaultRootObject: '/index.html'
+            Enabled: true
+            HttpVersion: http2
+            Origins:
+              - DomainName: !GetAtt 'S3Bucket.DomainName'
+                Id: s3origin
+                S3OriginConfig:
+                  OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}'
+            PriceClass: 'PriceClass_All'
+Outputs:
+    WebsiteURL:
+        Value: !GetAtt
+          - S3Bucket
+          - WebsiteURL
+        Description: URL for website hosted on S3
+    S3BucketSecureURL:
+        Value: !Join
+            - ''
+            - - 'https://'
+              - !GetAtt
+                - S3Bucket
+                - DomainName
+
+    DistributionId:
+        Description: 'CloudFront Distribution ID'
+        Value: !Ref CloudFrontDistribution
+    Domain:
+        Description: 'Cloudfront Domain'
+        Value: !GetAtt CloudFrontDistribution.DomainName
