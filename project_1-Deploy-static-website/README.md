@@ -31,6 +31,14 @@
 
 ![Website Access](./ProjectImages/BrowserAccess.png)
 
+As discussed in the [deploying the stati site to s3](#deploy-the-static-site-to-s3) 
+and the [get links](#get-links) sections, the link to the deployed project is
+<https://d23wp0xw2ulvh8.cloudfront.net>
+
+> **Note:** This link will only live for a few hours after May 30th 2022
+>
+> However, the steps to recreate the deployment are contained within this repo
+
 ## Build the infrastructure
 
 The infrastructure includes a Stack consisting of a public S3 bucket.
