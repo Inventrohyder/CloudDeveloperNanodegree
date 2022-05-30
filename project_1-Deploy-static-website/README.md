@@ -1,5 +1,10 @@
 # Deploy A Static Site on AWS
 
+> **Note:** This project is hosted on Github at the following link:
+> <https://github.com/Inventrohyder/CloudDeveloperNanodegree/tree/main/project_1-Deploy-static-website>
+>
+> At the same link will you find a rendered version of this README.md file
+
 ## Website Files
 
 ### S3 Bucket is created
