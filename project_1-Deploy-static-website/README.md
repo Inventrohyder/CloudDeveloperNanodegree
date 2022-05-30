@@ -1,5 +1,31 @@
 # Deploy A Static Site on AWS
 
+## Website Files
+
+### S3 Bucket is created
+
+![S3 Bucket created](./ProjectImages/S3BucketCreated.png)
+
+### Uploaded Files
+
+![Uploaded files](./ProjectImages/UploadedFiles.png)
+
+### Static Website Hosting
+
+![Static Website Hosting](./ProjectImages/StaticWebsiteHosting.png)
+
+### IAM Bucket Policy
+
+![IAM Bucket Policy](./ProjectImages/IAMBucketPolicy.png)
+
+### Website Distribution
+
+![Website Distribution](./ProjectImages/CloudFrontDistribution.png)
+
+### Website Access
+
+![Website Access](./ProjectImages/BrowserAccess.png)
+
 ## Build the infrastructure
 
 The infrastructure includes a Stack consisting of a public S3 bucket.
