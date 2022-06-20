@@ -1,7 +1,7 @@
-import express from 'express';
-import { Request, Response } from 'express';
-import bodyParser from 'body-parser';
-import { filterImageFromURL, deleteLocalFiles } from './util/util';
+import bodyParser from "body-parser";
+import express from "express";
+import { Request, Response } from "express";
+import { deleteLocalFiles, filterImageFromURL } from "./util/util";
 
 (async () => {
 
@@ -29,11 +29,11 @@ import { filterImageFromURL, deleteLocalFiles } from './util/util';
 
   /**************************************************************************** */
 
-  app.get('/filteredimage', async (req: Request, res: Response) => {
+  app.get("/filteredimage", async (req: Request, res: Response) => {
     const { image_url } = req.query;
 
     if (!image_url) {
-      res.status(400).send("image_url query parameter is required")
+      res.status(400).send("image_url query parameter is required");
     }
 
     try {
@@ -44,22 +44,25 @@ import { filterImageFromURL, deleteLocalFiles } from './util/util';
       });
     } catch (error) {
       res.status(422).send(`Unable to process ${image_url}`);
+      // tslint:disable-next-line: no-console
+      console.error(error);
     }
 
   });
 
-  //! END @TODO1
+  // ! END @TODO1
 
   // Root Endpoint
   // Displays a simple message to the user
   app.get("/", async (req, res) => {
-    res.send("try GET /filteredimage?image_url={{}}")
+    res.send("try GET /filteredimage?image_url={{}}");
   });
-
 
   // Start the Server
   app.listen(port, () => {
+    // tslint:disable-next-line: no-console
     console.log(`server running http://localhost:${port}`);
+    // tslint:disable-next-line: no-console
     console.log(`press CTRL+C to stop server`);
   });
 })();
