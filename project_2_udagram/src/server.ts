@@ -36,11 +36,15 @@ import { filterImageFromURL, deleteLocalFiles } from './util/util';
       res.status(400).send("image_url query parameter is required")
     }
 
-    const filteredFile = await filterImageFromURL(image_url);
+    try {
+      const filteredFile = await filterImageFromURL(image_url);
 
-    res.status(200).sendFile(filteredFile, () => {
-      deleteLocalFiles([filteredFile]);
-    });
+      res.status(200).sendFile(filteredFile, () => {
+        deleteLocalFiles([filteredFile]);
+      });
+    } catch (error) {
+      res.status(422).send(`Unable to process ${image_url}`);
+    }
 
   });
 
